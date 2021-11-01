@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EMMA Virtual Therapist</string>
+    <string name="app_name">EMMA ROM</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="test_id">Test ID: %s</string>

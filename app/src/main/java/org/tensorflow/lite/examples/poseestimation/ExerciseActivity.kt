@@ -22,7 +22,15 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
 import androidx.core.content.ContextCompat
+import com.google.android.gms.tasks.Task
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.segmentation.Segmentation
+import com.google.mlkit.vision.segmentation.SegmentationMask
+import com.google.mlkit.vision.segmentation.Segmenter
+import com.google.mlkit.vision.segmentation.selfie.SelfieSegmenterOptions
 import org.tensorflow.lite.examples.poseestimation.api.IExerciseService
 import org.tensorflow.lite.examples.poseestimation.api.request.ExerciseData
 import org.tensorflow.lite.examples.poseestimation.api.request.ExerciseRequestPayload
@@ -36,6 +44,7 @@ import org.tensorflow.lite.examples.poseestimation.domain.model.*
 import org.tensorflow.lite.examples.poseestimation.exercise.IExercise
 import org.tensorflow.lite.examples.poseestimation.ml.MoveNet
 import org.tensorflow.lite.examples.poseestimation.ml.PoseDetector
+import org.tensorflow.lite.examples.poseestimation.romExercise.BaseROMExercise
 import org.tensorflow.lite.examples.poseestimation.shared.Exercises
 import retrofit2.Call
 import retrofit2.Callback
@@ -65,6 +74,8 @@ class ExerciseActivity : AppCompatActivity() {
     private var cameraDevice: CameraDevice? = null
     private var captureSession: CameraCaptureSession? = null
     private var poseDetector: PoseDetector? = null
+    private var segmenter: Segmenter? = null
+    private var mask = BaseROMExercise()
     private var device = Device.CPU
     private var modelPos = 2
     private var imageReader: ImageReader? = null
@@ -141,8 +152,8 @@ class ExerciseActivity : AppCompatActivity() {
                 rotateMatrix, true
             )
             image.close()
-
             processImage(rotatedBitmap)
+            createInstanceSegmenter(rotatedBitmap)
         }
     }
 
@@ -287,6 +298,23 @@ class ExerciseActivity : AppCompatActivity() {
         poseDetector = MoveNet.create(this, device)
         openCamera()
         startBackgroundThread()
+    }
+
+    private fun createInstanceSegmenter(image: Bitmap) {
+
+        segmenter?.close()
+        val options =
+            SelfieSegmenterOptions.Builder()
+                .setDetectorMode(SelfieSegmenterOptions.STREAM_MODE)
+                .build()
+
+        segmenter = Segmentation.getClient(options)
+        val inputImageObject = InputImage.fromBitmap(image, 0)
+        segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
+            val segmentationMask = task.result
+            mask.getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
+        }
+
     }
 
     private fun initSpinner() {
@@ -694,3 +722,4 @@ class ExerciseActivity : AppCompatActivity() {
         )
     }
 }
+
