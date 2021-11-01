@@ -22,13 +22,9 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import androidx.core.content.ContextCompat
-import com.google.android.gms.tasks.Task
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.segmentation.Segmentation
-import com.google.mlkit.vision.segmentation.SegmentationMask
 import com.google.mlkit.vision.segmentation.Segmenter
 import com.google.mlkit.vision.segmentation.selfie.SelfieSegmenterOptions
 import org.tensorflow.lite.examples.poseestimation.api.IExerciseService
@@ -76,6 +72,7 @@ class ExerciseActivity : AppCompatActivity() {
     private var poseDetector: PoseDetector? = null
     private var segmenter: Segmenter? = null
     private var mask = BaseROMExercise()
+    private var frameCount: Int = 0
     private var device = Device.CPU
     private var modelPos = 2
     private var imageReader: ImageReader? = null
@@ -152,7 +149,12 @@ class ExerciseActivity : AppCompatActivity() {
                 rotateMatrix, true
             )
             image.close()
-            processImage(rotatedBitmap)
+//            processImage(rotatedBitmap)
+            frameCount += 1
+//            if (frameCount >= 5) {
+//                createInstanceSegmenter(rotatedBitmap)
+//                frameCount = 0
+//            }
             createInstanceSegmenter(rotatedBitmap)
         }
     }
@@ -302,7 +304,6 @@ class ExerciseActivity : AppCompatActivity() {
 
     private fun createInstanceSegmenter(image: Bitmap) {
 
-        segmenter?.close()
         val options =
             SelfieSegmenterOptions.Builder()
                 .setDetectorMode(SelfieSegmenterOptions.STREAM_MODE)
@@ -313,6 +314,7 @@ class ExerciseActivity : AppCompatActivity() {
         segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
             val segmentationMask = task.result
             mask.getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
+
         }
 
     }
@@ -549,7 +551,7 @@ class ExerciseActivity : AppCompatActivity() {
         val right: Int = left + screenWidth
         val bottom: Int = top + screenHeight
 
-        Log.d("BitMapValue", "$outputBitmap")
+//        Log.d("BitMapValue", "$outputBitmap")
 
         canvas.drawBitmap(
             outputBitmap, Rect(0, 0, outputBitmap.width, outputBitmap.height),

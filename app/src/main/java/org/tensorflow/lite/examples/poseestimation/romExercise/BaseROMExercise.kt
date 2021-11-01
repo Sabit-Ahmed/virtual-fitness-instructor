@@ -58,7 +58,7 @@ class BaseROMExercise: IROMModel {
             }
         }
         val pixelDifferenceY: Float = bottomY - topY
-        val pixelDifferenceX: Float = bottomX - topY
+        val pixelDifferenceX: Float = rightX - leftX
         val topPoint = Point(topX, topY)
         val bottomPoint = Point(bottomX,bottomY)
         val leftPoint = Point(leftX,leftY)
