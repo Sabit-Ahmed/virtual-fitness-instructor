@@ -149,13 +149,16 @@ class ExerciseActivity : AppCompatActivity() {
                 rotateMatrix, true
             )
             image.close()
-//            processImage(rotatedBitmap)
+
             frameCount += 1
-//            if (frameCount >= 5) {
-//                createInstanceSegmenter(rotatedBitmap)
-//                frameCount = 0
-//            }
-            createInstanceSegmenter(rotatedBitmap)
+            if (frameCount >= 5) {
+                createInstanceSegmenter(rotatedBitmap)
+                frameCount = 0
+            }
+            else {
+                processImage(rotatedBitmap)
+            }
+
         }
     }
 
@@ -314,9 +317,45 @@ class ExerciseActivity : AppCompatActivity() {
         segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
             val segmentationMask = task.result
             mask.getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
+        }
+        displayPreview(image)
 
+    }
+
+    private fun displayPreview(outputBitmap: Bitmap) {
+        val canvas: Canvas = surfaceHolder.lockCanvas()
+        if (isFrontCamera) {
+            canvas.scale(-1f, 1f, canvas.width.toFloat() / 2, canvas.height.toFloat() / 2)
         }
 
+        val screenWidth: Int
+        val screenHeight: Int
+        val left: Int
+        val top: Int
+
+        if (canvas.height > canvas.width) {
+            val ratio = outputBitmap.height.toFloat() / outputBitmap.width
+            screenWidth = canvas.width
+            left = 0
+            screenHeight = (canvas.width * ratio).toInt()
+            top = (canvas.height - screenHeight) / 2
+        } else {
+            val ratio = outputBitmap.width.toFloat() / outputBitmap.height
+            screenHeight = canvas.height
+            top = 0
+            screenWidth = (canvas.height * ratio).toInt()
+            left = (canvas.width - screenWidth) / 2
+        }
+        val right: Int = left + screenWidth
+        val bottom: Int = top + screenHeight
+
+//        Log.d("BitMapValue", "$outputBitmap")
+
+        canvas.drawBitmap(
+            outputBitmap, Rect(0, 0, outputBitmap.width, outputBitmap.height),
+            Rect(left, top, right, bottom), Paint()
+        )
+        surfaceHolder.unlockCanvasAndPost(canvas)
     }
 
     private fun initSpinner() {
