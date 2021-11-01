@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">EMMA Virtual Therapist</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="test_id">Test ID: %s</string>
+    <string name="exercise_count">Exercise Count: %d</string>
+    <string name="tfe_pe_request_permission">This app needs camera permission.</string>
+    <string name="tfe_pe_tv_score">Score: %.2f</string>
+    <string name="tfe_pe_tv_model">Model: </string>
+    <string name="tfe_pe_tv_time">Time: %.2f ms</string>
+    <string name="tfe_pe_tv_device">Device: </string>
+    <string name="hello">Hello</string>
+    <string name="exercise_name">Exercise Name</string>
+    <string name="Description">Description</string>
+    <string name="exercise_image">Exercise image</string>
+    <string name="exercise_list">Exercise List</string>
+    <string name="exercise_assistant">I am your personal exercise assistant</string>
+    <string name="knee_squat">Knee Squat</string>
+    <string name="knee_squat_exercise">Knee Squat Exercise</string>
+    <string name="half_knee_squat">Half Knee Squat</string>
+    <string name="half_knee_squat_exercise">Half Knee Squat Exercise</string>
+    <string name="reach_arms_over_head">Reach Arms Over Head</string>
+    <string name="reach_arms_over_head_exercise">Reach Arms Over Head Exercise</string>
+    <string name="seated_knee_extension">Seated Knee Extension</string>
+    <string name="seated_knee_extension_exercise">Seated Knee Extension Exercise</string>
+    <string name="the_fetched_data">The Fetched Data:</string>
+    <string name="flip_camera">Flip Camera</string>
+    <string name="mymedicalhub">MyMedicalHub</string>
+    <string name="your_personal_exercise_assistant">Your personal exercise assistant.</string>
+    <string name="camera_switching_button">Camera Switching Button</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="i_m_done">I\'m Done</string>
+    <string name="hello_patient_name_i_m_emma">Hi! I\'m EMMA.</string>
+    <string name="log_out_button">Log Out button</string>
+    <string name="log_out">Log Out</string>
+
+    <string-array name="tfe_pe_models_array">
+        <item>Movenet Thunder</item>
+        <item>Movenet Lightning</item>
+        <item>Posenet</item>
+    </string-array>
+
+    <string-array name="tfe_pe_device_name">
+        <item>CPU</item>
+        <item>GPU</item>
+        <item>NNAPI</item>
+    </string-array>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="my_exercise">My Exercise</string>
+    <string name="fysical_score_victory_assessment">Fysical Score Victory Assessment</string>
+    <string name="posture_analysis">Posture Analysis</string>
+    <string name="pain_recorder">Pain Recorder</string>
+    <string name="appointment">Appointment</string>
+    <string name="assessment_list">Assessment List</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="active">Active</string>
+    <string name="guideline">Guideline</string>
+    <string name="guidelines">Guidelines</string>
+    <string name="instructions">Instructions</string>
+    <string name="exercise_images">Exercise Images</string>
+    <string name="instruction_details">Instruction details</string>
+    <string name="images">Images</string>
+    <string name="exercise_name_guideline">Exercise Name Guideline</string>
+</resources>
