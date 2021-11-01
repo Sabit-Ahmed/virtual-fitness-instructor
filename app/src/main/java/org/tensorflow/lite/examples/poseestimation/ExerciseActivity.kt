@@ -563,40 +563,7 @@ class ExerciseActivity : AppCompatActivity() {
                 )
             }
         }
-
-        val canvas: Canvas = surfaceHolder.lockCanvas()
-        if (isFrontCamera) {
-            canvas.scale(-1f, 1f, canvas.width.toFloat() / 2, canvas.height.toFloat() / 2)
-        }
-
-        val screenWidth: Int
-        val screenHeight: Int
-        val left: Int
-        val top: Int
-
-        if (canvas.height > canvas.width) {
-            val ratio = outputBitmap.height.toFloat() / outputBitmap.width
-            screenWidth = canvas.width
-            left = 0
-            screenHeight = (canvas.width * ratio).toInt()
-            top = (canvas.height - screenHeight) / 2
-        } else {
-            val ratio = outputBitmap.width.toFloat() / outputBitmap.height
-            screenHeight = canvas.height
-            top = 0
-            screenWidth = (canvas.height * ratio).toInt()
-            left = (canvas.width - screenWidth) / 2
-        }
-        val right: Int = left + screenWidth
-        val bottom: Int = top + screenHeight
-
-//        Log.d("BitMapValue", "$outputBitmap")
-
-        canvas.drawBitmap(
-            outputBitmap, Rect(0, 0, outputBitmap.width, outputBitmap.height),
-            Rect(left, top, right, bottom), Paint()
-        )
-        surfaceHolder.unlockCanvasAndPost(canvas)
+        displayPreview(outputBitmap)
         tvScore.text = getString(R.string.tfe_pe_tv_score).format(score)
         poseDetector?.lastInferenceTimeNanos()?.let {
             tvTime.text =
