@@ -21,7 +21,7 @@ class BaseROMExercise: IROMModel {
         maskWidth: Int,
         mask: ByteBuffer
     ): List<MaskDetails> {
-        var background = 0f
+//        var background = 0f
         var totalConfidence = 0f
         var topX: Float = ((maskHeight * maskWidth) + 100).toFloat()
         var topY: Float = ((maskHeight * maskWidth) + 100).toFloat()
