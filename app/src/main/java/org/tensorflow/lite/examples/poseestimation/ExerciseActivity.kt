@@ -73,8 +73,8 @@ class ExerciseActivity : AppCompatActivity() {
     private var segmenter: Segmenter? = null
     private var mask = BaseROMExercise()
     private var frameCount: Int = 0
-    private var device = Device.CPU
-    private var modelPos = 2
+    private var device = Device.GPU
+    private var modelPos = 0
     private var imageReader: ImageReader? = null
     private val minConfidence = .2f
     private var previewRequestBuilder: CaptureRequest.Builder? = null
@@ -151,14 +151,11 @@ class ExerciseActivity : AppCompatActivity() {
                 rotateMatrix, true
             )
             image.close()
-
+            processImage(rotatedBitmap)
             frameCount += 1
             if (frameCount >= 10) {
-                createInstanceSegmenter(outputBitmap)
+                createInstanceSegmenter(rotatedBitmap)
                 frameCount = 0
-            }
-            else {
-                processImage(rotatedBitmap)
             }
 
         }
@@ -320,7 +317,7 @@ class ExerciseActivity : AppCompatActivity() {
             val segmentationMask = task.result
             mask.getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
         }
-        displayPreview(image)
+//        displayPreview(outputBitmap)
 
     }
 
