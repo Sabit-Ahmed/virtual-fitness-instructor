@@ -73,8 +73,8 @@ class ExerciseActivity : AppCompatActivity() {
     private var segmenter: Segmenter? = null
     private var mask = BaseROMExercise()
     private var frameCount: Int = 0
-    private var device = Device.CPU
-    private var modelPos = 2
+    private var device = Device.GPU
+    private var modelPos = 0
     private var imageReader: ImageReader? = null
     private val minConfidence = .2f
     private var previewRequestBuilder: CaptureRequest.Builder? = null
