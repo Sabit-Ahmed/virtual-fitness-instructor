@@ -35,7 +35,7 @@ class BaseROMExercise: IROMModel {
         for (y in 0 until maskHeight) {
             for (x in 0 until maskWidth) {
                 val byteBufferValue = mask.float
-//                totalConfidence += byteBufferValue
+                totalConfidence += byteBufferValue
 //                background = 1 - byteBufferValue
                 if (byteBufferValue >= 0.8f) {
                     if (y < topY) {
@@ -65,6 +65,6 @@ class BaseROMExercise: IROMModel {
         val rightPoint = Point(rightX,rightY)
         Log.d("maskQuestion", " pixel value: ($pixelDifferenceX, $pixelDifferenceY)")
         mask.rewind()
-        return (listOf(MaskDetails(pixelDifferenceX,pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)))
+        return (listOf(MaskDetails(totalConfidence, pixelDifferenceX, pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)))
     }
 }
