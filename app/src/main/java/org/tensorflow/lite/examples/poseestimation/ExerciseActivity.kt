@@ -84,12 +84,14 @@ class ExerciseActivity : AppCompatActivity() {
     private lateinit var tvTime: TextView
     private lateinit var spnDevice: Spinner
     private lateinit var spnModel: Spinner
+    private lateinit var outputBitmap : Bitmap
 
     private lateinit var exercise: IExercise
     private var exerciseConstraints: List<Phase> = listOf()
 
     private var isFrontCamera = true
     private var url: String = "https://vaapi.injurycloud.com"
+
 
     private val stateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -151,8 +153,8 @@ class ExerciseActivity : AppCompatActivity() {
             image.close()
 
             frameCount += 1
-            if (frameCount >= 5) {
-                createInstanceSegmenter(rotatedBitmap)
+            if (frameCount >= 10) {
+                createInstanceSegmenter(outputBitmap)
                 frameCount = 0
             }
             else {
@@ -540,7 +542,7 @@ class ExerciseActivity : AppCompatActivity() {
 
     private fun processImage(bitmap: Bitmap) {
         var score = 0f
-        var outputBitmap = bitmap
+        outputBitmap = bitmap
 
         // run detect pose
         // draw points and lines on original image
@@ -552,7 +554,7 @@ class ExerciseActivity : AppCompatActivity() {
                 exercise.exerciseCount(person, height, width, phases = exerciseConstraints)
                 exercise.wrongExerciseCount(person, height, width)
 
-                outputBitmap = VisualizationUtils.drawBodyKeyPoints(
+                outputBitmap = VisualizationUtils.drawHomeExercise(
                     bitmap,
                     exercise.drawingRules(person, phases = exerciseConstraints),
                     exercise.getRepetitionCount(),

@@ -12,7 +12,7 @@ object VisualizationUtils {
     private const val LINE_WIDTH = 3f
     private const val BORDER_WIDTH = 6f
 
-    fun drawBodyKeyPoints(
+    fun drawHomeExercise(
         input: Bitmap,
         drawingRules: List<Rule>,
         repCount: Int,
