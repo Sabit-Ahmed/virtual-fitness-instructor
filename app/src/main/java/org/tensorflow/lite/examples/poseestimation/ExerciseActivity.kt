@@ -151,14 +151,11 @@ class ExerciseActivity : AppCompatActivity() {
                 rotateMatrix, true
             )
             image.close()
-
+            processImage(rotatedBitmap)
             frameCount += 1
             if (frameCount >= 10) {
-                createInstanceSegmenter(outputBitmap)
+                createInstanceSegmenter(rotatedBitmap)
                 frameCount = 0
-            }
-            else {
-                processImage(rotatedBitmap)
             }
 
         }
@@ -320,7 +317,7 @@ class ExerciseActivity : AppCompatActivity() {
             val segmentationMask = task.result
             mask.getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
         }
-        displayPreview(image)
+//        displayPreview(outputBitmap)
 
     }
 
