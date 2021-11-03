@@ -5,6 +5,7 @@ import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskData
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskDetails
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
 import com.google.mlkit.vision.segmentation.SegmentationMask
+import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
 import java.nio.ByteBuffer
 
 class BaseROMExercise: IROMModel {
@@ -57,6 +58,11 @@ class BaseROMExercise: IROMModel {
                 }
             }
         }
+
+        if (totalConfidence < 15000) {
+            audioPlayer.play()
+        }
+
         val pixelDifferenceY: Float = bottomY - topY
         val pixelDifferenceX: Float = rightX - leftX
         val topPoint = Point(topX, topY)
@@ -67,4 +73,5 @@ class BaseROMExercise: IROMModel {
         mask.rewind()
         return (listOf(MaskDetails(totalConfidence, pixelDifferenceX, pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)))
     }
+
 }
