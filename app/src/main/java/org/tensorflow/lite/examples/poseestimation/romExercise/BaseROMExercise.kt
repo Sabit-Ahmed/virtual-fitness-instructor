@@ -6,16 +6,18 @@ import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskData
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskDetails
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
 import com.google.mlkit.vision.segmentation.SegmentationMask
-import org.tensorflow.lite.examples.poseestimation.R
-import org.tensorflow.lite.examples.poseestimation.core.AudioPlayer
-//import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
+//import org.tensorflow.lite.examples.poseestimation.core.AudioPlayer
+import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
 import java.nio.ByteBuffer
 
 class BaseROMExercise(
-    context: Context
+    context: Context,
+    romAudioPlayer: AudioPlayer
 ): IROMModel(
-    context = context
+    context = context,
+    audioPlayer = romAudioPlayer
 ) {
+    var romAudioPlayer = romAudioPlayer
     override fun getModelMask(modelMask: SegmentationMask): List<MaskData> {
         val mask = modelMask.buffer
         val maskWidth = modelMask.width
@@ -66,8 +68,8 @@ class BaseROMExercise(
         }
 
         if (totalConfidence < 15000) {
-//            myAudioPlayer.play()
-              comeForward()
+            romAudioPlayer.play()
+//            comeForward()
             Log.d("comeForward","come forward ..")
         }
 
