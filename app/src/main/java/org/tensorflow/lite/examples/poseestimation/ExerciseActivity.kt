@@ -33,6 +33,7 @@ import org.tensorflow.lite.examples.poseestimation.api.request.ExerciseRequestPa
 import org.tensorflow.lite.examples.poseestimation.api.request.ExerciseTrackingPayload
 import org.tensorflow.lite.examples.poseestimation.api.response.ExerciseTrackingResponse
 import org.tensorflow.lite.examples.poseestimation.api.response.KeyPointRestrictions
+import org.tensorflow.lite.examples.poseestimation.core.AudioPlayer
 import org.tensorflow.lite.examples.poseestimation.core.ImageUtils
 import org.tensorflow.lite.examples.poseestimation.core.Utilities
 import org.tensorflow.lite.examples.poseestimation.core.VisualizationUtils
@@ -41,6 +42,7 @@ import org.tensorflow.lite.examples.poseestimation.exercise.IExercise
 import org.tensorflow.lite.examples.poseestimation.ml.MoveNet
 import org.tensorflow.lite.examples.poseestimation.ml.PoseDetector
 import org.tensorflow.lite.examples.poseestimation.romExercise.BaseROMExercise
+//import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
 import org.tensorflow.lite.examples.poseestimation.shared.Exercises
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,7 +73,7 @@ class ExerciseActivity : AppCompatActivity() {
     private var captureSession: CameraCaptureSession? = null
     private var poseDetector: PoseDetector? = null
     private var segmenter: Segmenter? = null
-    private var mask = BaseROMExercise()
+//    private var mask = BaseROMExercise(this, myAudioPlayer = audioPlayer)
     private var frameCount: Int = 0
     private var device = Device.GPU
     private var modelPos = 0
@@ -85,12 +87,13 @@ class ExerciseActivity : AppCompatActivity() {
     private lateinit var spnDevice: Spinner
     private lateinit var spnModel: Spinner
     private lateinit var outputBitmap : Bitmap
-
     private lateinit var exercise: IExercise
+    private lateinit var audioPlayer: AudioPlayer
     private var exerciseConstraints: List<Phase> = listOf()
 
     private var isFrontCamera = true
     private var url: String = "https://vaapi.injurycloud.com"
+
 
 
     private val stateCallback = object : CameraDevice.StateCallback() {
@@ -151,6 +154,7 @@ class ExerciseActivity : AppCompatActivity() {
                 rotateMatrix, true
             )
             image.close()
+            audioPlayer = AudioPlayer(this@ExerciseActivity)
             processImage(rotatedBitmap)
             frameCount += 1
             if (frameCount >= 10) {
@@ -247,6 +251,7 @@ class ExerciseActivity : AppCompatActivity() {
         }
 
         createPoseEstimator()
+        audioPlayer = AudioPlayer(this)
 
         tvScore = findViewById(R.id.tvScore)
         tvTime = findViewById(R.id.tvTime)
@@ -315,7 +320,7 @@ class ExerciseActivity : AppCompatActivity() {
         val inputImageObject = InputImage.fromBitmap(image, 0)
         segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
             val segmentationMask = task.result
-            mask.getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
+            BaseROMExercise(this).getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
         }
 //        displayPreview(outputBitmap)
 
