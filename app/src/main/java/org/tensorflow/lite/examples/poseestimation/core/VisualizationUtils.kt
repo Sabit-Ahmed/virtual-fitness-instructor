@@ -30,66 +30,66 @@ object VisualizationUtils {
         val width = draw.canvas.width
         val height = draw.canvas.height
 
-        for (rule in drawingRules) {
-            if (rule.type == RuleType.ANGLE) {
-                if (isFrontCamera) {
-                    draw.angle(
-                        Point(
-                            output.width - rule.startPoint.x,
-                            rule.startPoint.y
-                        ),
-                        Point(
-                            output.width - rule.middlePoint.x,
-                            rule.middlePoint.y
-                        ),
-                        Point(
-                            output.width - rule.endPoint.x,
-                            rule.endPoint.y
-                        ),
-                        _clockWise = !rule.clockWise
-                    )
-                } else {
-                    draw.angle(
-                        rule.startPoint,
-                        rule.middlePoint,
-                        rule.endPoint,
-                        _clockWise = rule.clockWise
-                    )
-                }
-            } else {
-                if (isFrontCamera) {
-                    draw.line(
-                        Point(
-                            output.width - rule.startPoint.x,
-                            rule.startPoint.y
-                        ),
-                        Point(
-                            output.width - rule.endPoint.x,
-                            rule.endPoint.y
-                        ),
-                        _color = rule.color
-                    )
-                } else {
-                    draw.line(
-                        rule.startPoint,
-                        rule.endPoint,
-                        _color = rule.color
-                    )
-                }
-            }
-        }
-        draw.writeText(
-            "$repCount / $setCount",
-            Point(width * 1 / 7f, 60f),
-            Color.rgb(19, 93, 148),//blue
-            65f
-        )
-        draw.writeText(
-            wrongCount.toString(),
-            Point(width * 2.4f / 3f, 60f),
-            Color.rgb(255, 0, 0),//green
-            65f
-        )
+//        for (rule in drawingRules) {
+//            if (rule.type == RuleType.ANGLE) {
+//                if (isFrontCamera) {
+//                    draw.angle(
+//                        Point(
+//                            output.width - rule.startPoint.x,
+//                            rule.startPoint.y
+//                        ),
+//                        Point(
+//                            output.width - rule.middlePoint.x,
+//                            rule.middlePoint.y
+//                        ),
+//                        Point(
+//                            output.width - rule.endPoint.x,
+//                            rule.endPoint.y
+//                        ),
+//                        _clockWise = !rule.clockWise
+//                    )
+//                } else {
+//                    draw.angle(
+//                        rule.startPoint,
+//                        rule.middlePoint,
+//                        rule.endPoint,
+//                        _clockWise = rule.clockWise
+//                    )
+//                }
+//            } else {
+//                if (isFrontCamera) {
+//                    draw.line(
+//                        Point(
+//                            output.width - rule.startPoint.x,
+//                            rule.startPoint.y
+//                        ),
+//                        Point(
+//                            output.width - rule.endPoint.x,
+//                            rule.endPoint.y
+//                        ),
+//                        _color = rule.color
+//                    )
+//                } else {
+//                    draw.line(
+//                        rule.startPoint,
+//                        rule.endPoint,
+//                        _color = rule.color
+//                    )
+//                }
+//            }
+//        }
+//        draw.writeText(
+//            "$repCount / $setCount",
+//            Point(width * 1 / 7f, 60f),
+//            Color.rgb(19, 93, 148),//blue
+//            65f
+//        )
+//        draw.writeText(
+//            wrongCount.toString(),
+//            Point(width * 2.4f / 3f, 60f),
+//            Color.rgb(255, 0, 0),//green
+//            65f
+//        )
         if (borderColor != -1) {
             draw.rectangle(
                 Point(width * 2f / 20f, height * 2.5f / 20f),
