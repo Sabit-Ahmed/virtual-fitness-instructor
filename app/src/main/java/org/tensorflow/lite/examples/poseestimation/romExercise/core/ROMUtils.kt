@@ -1,5 +1,6 @@
 package org.tensorflow.lite.examples.poseestimation.romExercise.core
 
+import org.tensorflow.lite.examples.poseestimation.romExercise.data.Line
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
 import kotlin.math.acos
 import kotlin.math.pow
@@ -55,20 +56,20 @@ object ROMUtils {
         pointA: Point,
         pointB: Point
     ): Float {
-        return pointA.x * pointB.y - pointA.y * pointB.x;
+        return pointA.x * pointB.y - pointA.y * pointB.x
     }
 
-    fun line_intersection(
-        line1,
-        line2
-    ){
-        xdiff = [line1[0][0] - line1[1][0], line2[0][0] - line2[1][0]];
-        ydiff = [line1[0][1] - line1[1][1], line2[0][1] - line2[1][1]];
-        div = det(xdiff, ydiff);
-        d = [det(line1[0],line1[1]), det(line2[0], line2[1])];
-        x = det(d, xdiff) / div;
-        y = det(d, ydiff) / div;
-        return [x, y];
+    fun lineIntersection(
+        lineA: Line,
+        lineB: Line
+    ): Point {
+        val xDiff = Point(lineA.startPoint.x - lineA.endPoint.x, lineB.startPoint.x - lineB.endPoint.x)
+        val yDiff = Point(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
+        val divisor = det(xDiff, yDiff)
+        val d = Point(det(lineA.endPoint, lineA.endPoint), det(lineB.endPoint, lineB.endPoint))
+        val x = det(d, xDiff) / divisor
+        val y = det(d, yDiff) / divisor
+        return Point(x, y)
     }
 
     fun detectOrientation(pose){
