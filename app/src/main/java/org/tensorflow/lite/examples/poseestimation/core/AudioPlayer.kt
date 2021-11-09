@@ -10,7 +10,7 @@ class AudioPlayer(
     private val context: Context
 ) {
     fun play(@RawRes filepath: Int) {
-        val player = MediaPlayer.create(context, filepath)
+        val player = MediaPlayer.create(this.context, filepath)
         player.start()
         player.setOnCompletionListener {
             player.release()
