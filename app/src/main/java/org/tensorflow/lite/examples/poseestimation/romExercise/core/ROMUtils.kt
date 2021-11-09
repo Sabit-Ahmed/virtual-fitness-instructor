@@ -135,14 +135,12 @@ object ROMUtils {
         return keypointsDict;
     }
 
-    fun roundArray (my_array) {
-        let x = 0;
-        let len = my_array.length
-                while(x < len){
-                    my_array[x] = my_array[x].toFixed(2);
-                    x++
-                }
-        return my_array;
+    fun roundArray (myArray: Array<Any>): Array<Any> {
+
+        for(i in 0..myArray.size){
+            myArray[i] = String.format("%.2f", myArray[i])
+        }
+        return myArray;
     }
 }
 
