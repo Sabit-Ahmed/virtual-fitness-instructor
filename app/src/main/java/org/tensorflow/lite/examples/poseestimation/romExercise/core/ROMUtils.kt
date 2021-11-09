@@ -4,6 +4,7 @@ import org.tensorflow.lite.examples.poseestimation.domain.model.BodyPart
 import org.tensorflow.lite.examples.poseestimation.domain.model.KeyPoint
 import org.tensorflow.lite.examples.poseestimation.domain.model.Person
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Line
+import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskDetails
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
 import kotlin.math.acos
 import kotlin.math.pow
@@ -56,10 +57,10 @@ object ROMUtils {
     }
 
     fun det(
-        pointA: Point,
-        pointB: Point
+        xDiff: List<Float>,
+        yDiff: List<Float>
     ): Float {
-        return pointA.x * pointB.y - pointA.y * pointB.x
+        return xDiff[0] * yDiff[1] - xDiff[1] * yDiff[0]
     }
 
     fun lineIntersection(
@@ -67,10 +68,10 @@ object ROMUtils {
         lineB: Line
     ): Point {
 
-        val xDiff = Point(lineA.startPoint.x - lineA.endPoint.x, lineB.startPoint.x - lineB.endPoint.x)
-        val yDiff = Point(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
+        val xDiff = mutableListOf(lineA.startPoint.x - lineA.endPoint.x, lineB.startPoint.x - lineB.endPoint.x)
+        val yDiff = mutableListOf(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
         val divisor = det(xDiff, yDiff)
-        val d = Point(det(lineA.endPoint, lineA.endPoint), det(lineB.endPoint, lineB.endPoint))
+        val d = (det(lineA.startPoint, lineA.endPoint), det(lineB.startPoint, lineB.endPoint))
         val x = det(d, xDiff) / divisor
         val y = det(d, yDiff) / divisor
 
@@ -92,9 +93,15 @@ object ROMUtils {
         return count > 1
     }
 
-    fun calculateProportion (pose, height) {
-        height = height - 8.5; // nose to top of head=6 inch and ankle to floor 2.5 inch
-        let lowerPoint;
+    fun calculateProportion (
+        keyPoints: List<KeyPoint>,
+        originalHeightInch: Float,
+        maskDetails: MaskDetails
+    ) {
+
+        val bottomPoint = Point(maskDetails.bottomPoint.x, keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.y)
+        val topPoint = Point(maskDetails.topPoint.x, keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.y)
+
         let index;
         let keypointName = processKeypoints(pose);
         // let upperPoint = pose.keypoints[0];
@@ -109,7 +116,7 @@ object ROMUtils {
         }
         lowerPoint.x = pose.keypoints[0].x;
         lowerPoint = [lowerPoint.x, lowerPoint.y];
-        distance = calculateDistance(upperPoint, lowerPoint);
+        distance = getDistance(upperPoint, lowerPoint);
         console.log("upper: ", upperPoint)
         console.log("lower: ", lowerPoint)
         console.log("distance: ", distance)
@@ -127,14 +134,6 @@ object ROMUtils {
         middlePoint.y = ( pointA.y + pointB.y )/2
 
         return middlePoint
-    }
-
-    fun processKeypoints (pose) {
-        let keypointsDict = {};
-        for (let i=0; i<pose.keypoints.length; i++){
-            keypointsDict[pose.keypoints[i].name] = [pose.keypoints[i].x, pose.keypoints[i].y];
-        }
-        return keypointsDict;
     }
 
     fun roundArray (myArray: Array<Any>): Array<Any> {
