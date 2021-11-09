@@ -117,11 +117,14 @@ object ROMUtils {
         return proportion;
     }
 
-    fun calculateMiddlePoint (A, B) {
-        let middlePoint = [];
-        middlePoint[0] = ( A[0] + B[0] )/2;
-        middlePoint[1] = ( A[1] + B[1] )/2;
-        return middlePoint;
+    fun calculateMiddlePoint (
+        pointA: Point,
+        pointB: Point
+    ): Point {
+        var middlePoint = Point(0f, 0f)
+        middlePoint.x = ( pointA.x + pointB.x )/2
+        middlePoint.y = ( pointA.y + pointB.y )/2
+        return middlePoint
     }
 
     fun processKeypoints (pose) {
