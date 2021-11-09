@@ -1,5 +1,8 @@
 package org.tensorflow.lite.examples.poseestimation.romExercise.core
 
+import org.tensorflow.lite.examples.poseestimation.domain.model.BodyPart
+import org.tensorflow.lite.examples.poseestimation.domain.model.KeyPoint
+import org.tensorflow.lite.examples.poseestimation.domain.model.Person
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Line
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
 import kotlin.math.acos
@@ -63,33 +66,30 @@ object ROMUtils {
         lineA: Line,
         lineB: Line
     ): Point {
+
         val xDiff = Point(lineA.startPoint.x - lineA.endPoint.x, lineB.startPoint.x - lineB.endPoint.x)
         val yDiff = Point(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
         val divisor = det(xDiff, yDiff)
         val d = Point(det(lineA.endPoint, lineA.endPoint), det(lineB.endPoint, lineB.endPoint))
         val x = det(d, xDiff) / divisor
         val y = det(d, yDiff) / divisor
+
         return Point(x, y)
     }
 
-    fun detectOrientation(pose){
-        let count = 0;
-        if (pose.keypoints[5].score > pose.keypoints[6].score) {
-            count = count + 1;
+    fun detectOrientation(keyPoints: List<KeyPoint>): Boolean {
+        var count = 0
+        if (keyPoints[BodyPart.LEFT_SHOULDER.position].score > keyPoints[BodyPart.RIGHT_SHOULDER.position].score) {
+            count += 1
         }
-        if (pose.keypoints[11].score > pose.keypoints[12].score) {
-            count = count + 1;
+        if (keyPoints[BodyPart.LEFT_HIP.position].score > keyPoints[BodyPart.RIGHT_HIP.position].score) {
+            count += 1
         }
-        if (pose.keypoints[13].score > pose.keypoints[14].score) {
-            count = count + 1;
-        }
-        if (count > 1) {
-            return true;
-        }
-        else {
-            return false;
+        if (keyPoints[BodyPart.LEFT_KNEE.position].score > keyPoints[BodyPart.RIGHT_KNEE.position].score) {
+            count += 1
         }
 
+        return count > 1
     }
 
     fun calculateProportion (pose, height) {
@@ -121,9 +121,11 @@ object ROMUtils {
         pointA: Point,
         pointB: Point
     ): Point {
+
         var middlePoint = Point(0f, 0f)
         middlePoint.x = ( pointA.x + pointB.x )/2
         middlePoint.y = ( pointA.y + pointB.y )/2
+
         return middlePoint
     }
 
@@ -140,6 +142,7 @@ object ROMUtils {
         for(i in 0..myArray.size){
             myArray[i] = String.format("%.2f", myArray[i])
         }
+
         return myArray;
     }
 }
