@@ -10,8 +10,8 @@ class Calibration {
 
     fun getCalibrationMeasurement(
         keyPoints: List<KeyPoint>,
-        originalHeightInch: Float,
-        maskDetails: MaskDetails
+        maskDetails: MaskDetails,
+        originalHeightInch: Double
     ): List<Double> {
 
         val proportion = ROMUtils.calculateProportion(keyPoints, originalHeightInch, maskDetails)

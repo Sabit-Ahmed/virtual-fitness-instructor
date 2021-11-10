@@ -29,7 +29,7 @@ class BaseROMExercise(
         maskHeight: Int,
         maskWidth: Int,
         mask: ByteBuffer
-    ): List<MaskDetails> {
+    ): MaskDetails {
 //        var background = 0f
         var totalConfidence = 0f
         var topX: Float = ((maskHeight * maskWidth) + 100).toFloat()
@@ -67,7 +67,9 @@ class BaseROMExercise(
             }
         }
 
-        if (totalConfidence < 15000) {
+//        Log.d("confidence","${totalConfidence} ..")
+
+        if (totalConfidence < 7000) {
             romAudioPlayer.play()
 //            comeForward()
             Log.d("comeForward","come forward ..")
@@ -81,7 +83,7 @@ class BaseROMExercise(
         val rightPoint = Point(rightX,rightY)
         Log.d("maskQuestion", " pixel value: ($pixelDifferenceX, $pixelDifferenceY)")
         mask.rewind()
-        return (listOf(MaskDetails(totalConfidence, pixelDifferenceX, pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)))
+        return MaskDetails(totalConfidence, pixelDifferenceX, pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)
     }
 
 }
