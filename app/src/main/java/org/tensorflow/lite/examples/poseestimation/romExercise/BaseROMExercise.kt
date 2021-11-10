@@ -69,7 +69,7 @@ class BaseROMExercise(
 
 //        Log.d("confidence","${totalConfidence} ..")
 
-        if (totalConfidence < 7000) {
+        if (totalConfidence < 15000) {
             romAudioPlayer.play()
 //            comeForward()
             Log.d("comeForward","come forward ..")

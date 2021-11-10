@@ -315,7 +315,6 @@ class ExerciseActivity : AppCompatActivity() {
         val options =
             SelfieSegmenterOptions.Builder()
                 .setDetectorMode(SelfieSegmenterOptions.STREAM_MODE)
-                .enableRawSizeMask()
                 .build()
 
         segmenter = Segmentation.getClient(options)
@@ -325,6 +324,7 @@ class ExerciseActivity : AppCompatActivity() {
             val maskDetails = BaseROMExercise(this, audioPlayer).getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
             val calibrationMeasurement = keypoints?.let { Calibration().getCalibrationMeasurement(it, maskDetails, 67.5) }
             Log.d("Calibration", "$calibrationMeasurement")
+            Log.d("keypoints", "$keypoints")
         }
 //        displayPreview(outputBitmap)
 
