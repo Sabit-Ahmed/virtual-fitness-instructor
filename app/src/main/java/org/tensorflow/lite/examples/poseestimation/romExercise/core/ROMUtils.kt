@@ -68,12 +68,13 @@ object ROMUtils {
         lineB: Line
     ): Point {
 
-        val xDiff = mutableListOf(lineA.startPoint.x - lineA.endPoint.x, lineB.startPoint.x - lineB.endPoint.x)
-        val yDiff = mutableListOf(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
+        val xDiff = listOf(lineA.startPoint.x - lineA.endPoint.x, lineB.startPoint.x - lineB.endPoint.x)
+        val yDiff = listOf(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
         val divisor = det(xDiff, yDiff)
-        val d = (det(lineA.startPoint, lineA.endPoint), det(lineB.startPoint, lineB.endPoint))
-        val x = det(d, xDiff) / divisor
-        val y = det(d, yDiff) / divisor
+        val dividend = listOf(det(listOf(lineA.startPoint.x, lineA.startPoint.y), listOf(lineA.endPoint.x, lineA.endPoint.y)),
+            det(listOf(lineB.startPoint.x, lineB.startPoint.y), listOf(lineB.endPoint.y)))
+        val x = det(dividend, xDiff) / divisor
+        val y = det(dividend, yDiff) / divisor
 
         return Point(x, y)
     }
