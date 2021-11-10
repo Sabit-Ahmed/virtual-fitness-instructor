@@ -98,31 +98,14 @@ object ROMUtils {
         keyPoints: List<KeyPoint>,
         originalHeightInch: Float,
         maskDetails: MaskDetails
-    ) {
+    ): Double {
 
-        val bottomPoint = Point(maskDetails.bottomPoint.x, keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.y)
-        val topPoint = Point(maskDetails.topPoint.x, keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.y)
+        val bottomPoint = Point(keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.x, maskDetails.bottomPoint.y)
+        val topPoint = Point(keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.x, maskDetails.topPoint.y)
+        val distance = getDistance(topPoint, bottomPoint)
+        val proportion = distance/originalHeightInch
 
-        let index;
-        let keypointName = processKeypoints(pose);
-        // let upperPoint = pose.keypoints[0];
-        let upperPoint = keypointName.nose;
-        if (pose.keypoints[15].score > pose.keypoints[16].score) {
-            index = 15;
-            lowerPoint = pose.keypoints[index];
-        }
-        else {
-            index = 16;
-            lowerPoint = pose.keypoints[index];
-        }
-        lowerPoint.x = pose.keypoints[0].x;
-        lowerPoint = [lowerPoint.x, lowerPoint.y];
-        distance = getDistance(upperPoint, lowerPoint);
-        console.log("upper: ", upperPoint)
-        console.log("lower: ", lowerPoint)
-        console.log("distance: ", distance)
-        let proportion = distance/height;
-        return proportion;
+        return proportion
     }
 
     fun calculateMiddlePoint (
