@@ -72,7 +72,7 @@ object ROMUtils {
         val yDiff = listOf(lineA.startPoint.y - lineA.endPoint.y, lineB.startPoint.y - lineB.endPoint.y)
         val divisor = det(xDiff, yDiff)
         val dividend = listOf(det(listOf(lineA.startPoint.x, lineA.startPoint.y), listOf(lineA.endPoint.x, lineA.endPoint.y)),
-            det(listOf(lineB.startPoint.x, lineB.startPoint.y), listOf(lineB.endPoint.y)))
+            det(listOf(lineB.startPoint.x, lineB.startPoint.y), listOf(lineB.endPoint.x, lineB.endPoint.y)))
         val x = det(dividend, xDiff) / divisor
         val y = det(dividend, yDiff) / divisor
 
