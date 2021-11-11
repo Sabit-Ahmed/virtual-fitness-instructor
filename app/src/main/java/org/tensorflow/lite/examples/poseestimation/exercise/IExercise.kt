@@ -46,7 +46,7 @@ abstract class IExercise(
             10 -> R.raw.ten
             else -> R.raw.hello
         }
-        audioPlayer.play(resourceId)
+//        audioPlayer.play(resourceId)
         if (repetitionCounter >= maxRepCount) {
             repetitionCounter = 0
             setCounter++
@@ -69,7 +69,7 @@ abstract class IExercise(
         val timestamp = System.currentTimeMillis().toInt()
         if (timestamp - lastTimePlayed >= 3500) {
             lastTimePlayed = timestamp
-            audioPlayer.play(R.raw.keep_hand_straight)
+//            audioPlayer.play(R.raw.keep_hand_straight)
         }
     }
 
@@ -77,7 +77,7 @@ abstract class IExercise(
         val timestamp = System.currentTimeMillis().toInt()
         if (timestamp - lastTimePlayed >= 3500) {
             lastTimePlayed = timestamp
-            audioPlayer.play(R.raw.right_hand_straight)
+//            audioPlayer.play(R.raw.right_hand_straight)
         }
     }
 
@@ -85,7 +85,7 @@ abstract class IExercise(
         val timestamp = System.currentTimeMillis().toInt()
         if (timestamp - lastTimePlayed >= 3500) {
             lastTimePlayed = timestamp
-            audioPlayer.play(R.raw.left_hand_straight)
+//            audioPlayer.play(R.raw.left_hand_straight)
         }
     }
 

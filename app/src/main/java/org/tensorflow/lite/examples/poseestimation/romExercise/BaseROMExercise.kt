@@ -1,14 +1,23 @@
 package org.tensorflow.lite.examples.poseestimation.romExercise
 
+import android.content.Context
 import android.util.Log
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskData
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskDetails
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
 import com.google.mlkit.vision.segmentation.SegmentationMask
+//import org.tensorflow.lite.examples.poseestimation.core.AudioPlayer
+import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
 import java.nio.ByteBuffer
 
-class BaseROMExercise: IROMModel {
-
+class BaseROMExercise(
+    context: Context,
+    romAudioPlayer: AudioPlayer
+): IROMModel(
+    context = context,
+    audioPlayer = romAudioPlayer
+) {
+    var romAudioPlayer = romAudioPlayer
     override fun getModelMask(modelMask: SegmentationMask): List<MaskData> {
         val mask = modelMask.buffer
         val maskWidth = modelMask.width
@@ -20,8 +29,8 @@ class BaseROMExercise: IROMModel {
         maskHeight: Int,
         maskWidth: Int,
         mask: ByteBuffer
-    ): List<MaskDetails> {
-        var background = 0f
+    ): MaskDetails {
+//        var background = 0f
         var totalConfidence = 0f
         var topX: Float = ((maskHeight * maskWidth) + 100).toFloat()
         var topY: Float = ((maskHeight * maskWidth) + 100).toFloat()
@@ -35,7 +44,7 @@ class BaseROMExercise: IROMModel {
         for (y in 0 until maskHeight) {
             for (x in 0 until maskWidth) {
                 val byteBufferValue = mask.float
-//                totalConfidence += byteBufferValue
+                totalConfidence += byteBufferValue
 //                background = 1 - byteBufferValue
                 if (byteBufferValue >= 0.8f) {
                     if (y < topY) {
@@ -57,14 +66,25 @@ class BaseROMExercise: IROMModel {
                 }
             }
         }
+
+//        Log.d("confidence","${totalConfidence} ..")
+
+        if (totalConfidence < 15000) {
+            romAudioPlayer.play()
+//            comeForward()
+            Log.d("comeForward","come forward ..")
+        }
+
         val pixelDifferenceY: Float = bottomY - topY
         val pixelDifferenceX: Float = rightX - leftX
         val topPoint = Point(topX, topY)
         val bottomPoint = Point(bottomX,bottomY)
         val leftPoint = Point(leftX,leftY)
         val rightPoint = Point(rightX,rightY)
-        Log.d("maskQuestion", " pixel value: ($pixelDifferenceX, $pixelDifferenceY)")
+//        Log.d("maskQuestion", " pixel value: ($pixelDifferenceX, $pixelDifferenceY)")
+//        Log.d("imageSize", " Mask pixel value: ($maskHeight, $maskWidth)")
         mask.rewind()
-        return (listOf(MaskDetails(pixelDifferenceX,pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)))
+        return MaskDetails(totalConfidence, pixelDifferenceX, pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)
     }
+
 }
