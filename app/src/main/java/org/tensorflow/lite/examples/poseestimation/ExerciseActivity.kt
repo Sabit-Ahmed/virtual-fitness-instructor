@@ -75,6 +75,7 @@ class ExerciseActivity : AppCompatActivity() {
     private var poseDetector: PoseDetector? = null
     private var keypoints: List<KeyPoint>? = null
     private var segmenter: Segmenter? = null
+    private var originalHeightInch: Double = 68.5
     private var frameCount: Int = 0
     private var device = Device.GPU
     private var modelPos = 0
@@ -323,7 +324,7 @@ class ExerciseActivity : AppCompatActivity() {
         segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
             val segmentationMask = task.result
             val maskDetails = BaseROMExercise(this, audioPlayer).getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
-            val calibrationMeasurement = keypoints?.let { Calibration().getCalibrationMeasurement(it, maskDetails, 68.5) }
+            val calibrationMeasurement = keypoints?.let { Calibration().getCalibrationMeasurement(it, maskDetails, originalHeightInch) }
             Log.d("Calibration", "$calibrationMeasurement")
 //            Log.d("keypoints", "${keypoints?.get(1)}")
         }
