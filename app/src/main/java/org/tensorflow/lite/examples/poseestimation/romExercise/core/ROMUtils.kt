@@ -96,16 +96,18 @@ object ROMUtils {
 
     fun calculateProportion (
         keyPoints: List<KeyPoint>,
-        originalHeightInch: Double,
-        maskDetails: MaskDetails
+        maskDetails: MaskDetails,
+        originalHeightInch: Double
     ): Double {
 
         val bottomPoint = Point(keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.x, maskDetails.bottomPoint.y)
         val topPoint = Point(keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.x, maskDetails.topPoint.y)
         val distance = getDistance(topPoint, bottomPoint)
-        val proportion = distance/originalHeightInch
+        val proportion = originalHeightInch/distance
 
-//        Log.d("Calibration", "topPoint:: ${topPoint} and topPoint:: ${bottomPoint}")
+        Log.d("Calibration", "distance:: ${distance}")
+        Log.d("Calibration", "proportion:: ${proportion}")
+        Log.d("Calibration", "topPoint:: ${topPoint} and topPoint:: ${bottomPoint}")
 
         return proportion
     }

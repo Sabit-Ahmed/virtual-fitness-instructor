@@ -81,7 +81,8 @@ class BaseROMExercise(
         val bottomPoint = Point(bottomX,bottomY)
         val leftPoint = Point(leftX,leftY)
         val rightPoint = Point(rightX,rightY)
-        Log.d("maskQuestion", " pixel value: ($pixelDifferenceX, $pixelDifferenceY)")
+//        Log.d("maskQuestion", " pixel value: ($pixelDifferenceX, $pixelDifferenceY)")
+//        Log.d("imageSize", " Mask pixel value: ($maskHeight, $maskWidth)")
         mask.rewind()
         return MaskDetails(totalConfidence, pixelDifferenceX, pixelDifferenceY, topPoint, bottomPoint, leftPoint, rightPoint)
     }

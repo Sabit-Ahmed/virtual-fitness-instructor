@@ -156,6 +156,7 @@ class ExerciseActivity : AppCompatActivity() {
             )
             image.close()
 //            audioPlayer = AudioPlayer(this@ExerciseActivity)
+//            Log.d("imageSize", "${rotatedBitmap.height} and ${rotatedBitmap.width}")
             processImage(rotatedBitmap)
             frameCount += 1
             if (frameCount >= 10) {
@@ -322,9 +323,9 @@ class ExerciseActivity : AppCompatActivity() {
         segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
             val segmentationMask = task.result
             val maskDetails = BaseROMExercise(this, audioPlayer).getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
-            val calibrationMeasurement = keypoints?.let { Calibration().getCalibrationMeasurement(it, maskDetails, 67.5) }
+            val calibrationMeasurement = keypoints?.let { Calibration().getCalibrationMeasurement(it, maskDetails, 68.5) }
             Log.d("Calibration", "$calibrationMeasurement")
-            Log.d("keypoints", "$keypoints")
+//            Log.d("keypoints", "${keypoints?.get(1)}")
         }
 //        displayPreview(outputBitmap)
 

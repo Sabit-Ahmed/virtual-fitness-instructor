@@ -14,7 +14,7 @@ class Calibration {
         originalHeightInch: Double
     ): List<Double> {
 
-        val proportion = ROMUtils.calculateProportion(keyPoints, originalHeightInch, maskDetails)
+        val proportion = ROMUtils.calculateProportion(keyPoints, maskDetails, originalHeightInch)
 
         val shoulderToShoulderDistance = ROMUtils.getDistance(Point(keyPoints[BodyPart.RIGHT_SHOULDER.position].coordinate.x,
             keyPoints[BodyPart.RIGHT_SHOULDER.position].coordinate.y),
