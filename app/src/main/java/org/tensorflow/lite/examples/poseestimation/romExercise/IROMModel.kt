@@ -6,6 +6,7 @@ import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskData
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskDetails
 import com.google.mlkit.vision.segmentation.SegmentationMask
 import org.tensorflow.lite.examples.poseestimation.R
+import org.tensorflow.lite.examples.poseestimation.domain.model.KeyPoint
 import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
 import java.nio.ByteBuffer
 
@@ -17,7 +18,7 @@ abstract class IROMModel(
     private val audioPlayer = AudioPlayer(context)
 
     abstract fun getModelMask(modelMask: SegmentationMask) : List<MaskData>
-    abstract fun getMaskData(maskHeight:Int, maskWidth:Int, mask:ByteBuffer) : List<MaskDetails>
+    abstract fun getMaskData(maskHeight: Int, maskWidth: Int, mask: ByteBuffer) : MaskDetails
 
 //    fun comeForward(){
 //        val timestamp = System.currentTimeMillis().toInt()

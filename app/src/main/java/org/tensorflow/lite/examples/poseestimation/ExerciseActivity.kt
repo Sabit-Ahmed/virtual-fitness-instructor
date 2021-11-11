@@ -42,6 +42,7 @@ import org.tensorflow.lite.examples.poseestimation.exercise.IExercise
 import org.tensorflow.lite.examples.poseestimation.ml.MoveNet
 import org.tensorflow.lite.examples.poseestimation.ml.PoseDetector
 import org.tensorflow.lite.examples.poseestimation.romExercise.BaseROMExercise
+import org.tensorflow.lite.examples.poseestimation.romExercise.Calibration
 import org.tensorflow.lite.examples.poseestimation.romExercise.core.AudioPlayer
 import org.tensorflow.lite.examples.poseestimation.shared.Exercises
 import retrofit2.Call
@@ -72,6 +73,7 @@ class ExerciseActivity : AppCompatActivity() {
     private var cameraDevice: CameraDevice? = null
     private var captureSession: CameraCaptureSession? = null
     private var poseDetector: PoseDetector? = null
+    private var keypoints: List<KeyPoint>? = null
     private var segmenter: Segmenter? = null
     private var frameCount: Int = 0
     private var device = Device.GPU
@@ -154,6 +156,7 @@ class ExerciseActivity : AppCompatActivity() {
             )
             image.close()
 //            audioPlayer = AudioPlayer(this@ExerciseActivity)
+//            Log.d("imageSize", "${rotatedBitmap.height} and ${rotatedBitmap.width}")
             processImage(rotatedBitmap)
             frameCount += 1
             if (frameCount >= 10) {
@@ -319,7 +322,10 @@ class ExerciseActivity : AppCompatActivity() {
         val inputImageObject = InputImage.fromBitmap(image, 0)
         segmenter?.process(inputImageObject)?.addOnCompleteListener() { task ->
             val segmentationMask = task.result
-            BaseROMExercise(this, audioPlayer).getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
+            val maskDetails = BaseROMExercise(this, audioPlayer).getMaskData(segmentationMask.height, segmentationMask.width, segmentationMask.buffer)
+            val calibrationMeasurement = keypoints?.let { Calibration().getCalibrationMeasurement(it, maskDetails, 68.5) }
+            Log.d("Calibration", "$calibrationMeasurement")
+//            Log.d("keypoints", "${keypoints?.get(1)}")
         }
 //        displayPreview(outputBitmap)
 
@@ -548,6 +554,7 @@ class ExerciseActivity : AppCompatActivity() {
         // run detect pose
         // draw points and lines on original image
         poseDetector?.estimateSinglePose(bitmap)?.let { person ->
+            keypoints = person.keyPoints
             score = person.score
             if (score > minConfidence) {
                 val height = bitmap.height

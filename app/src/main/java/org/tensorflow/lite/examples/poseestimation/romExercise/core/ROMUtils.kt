@@ -1,8 +1,8 @@
 package org.tensorflow.lite.examples.poseestimation.romExercise.core
 
+import android.util.Log
 import org.tensorflow.lite.examples.poseestimation.domain.model.BodyPart
 import org.tensorflow.lite.examples.poseestimation.domain.model.KeyPoint
-import org.tensorflow.lite.examples.poseestimation.domain.model.Person
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Line
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.MaskDetails
 import org.tensorflow.lite.examples.poseestimation.romExercise.data.Point
@@ -96,14 +96,18 @@ object ROMUtils {
 
     fun calculateProportion (
         keyPoints: List<KeyPoint>,
-        originalHeightInch: Float,
-        maskDetails: MaskDetails
+        maskDetails: MaskDetails,
+        originalHeightInch: Double
     ): Double {
 
         val bottomPoint = Point(keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.x, maskDetails.bottomPoint.y)
         val topPoint = Point(keyPoints[BodyPart.RIGHT_KNEE.position].coordinate.x, maskDetails.topPoint.y)
         val distance = getDistance(topPoint, bottomPoint)
-        val proportion = distance/originalHeightInch
+        val proportion = originalHeightInch/distance
+
+        Log.d("Calibration", "distance:: ${distance}")
+        Log.d("Calibration", "proportion:: ${proportion}")
+        Log.d("Calibration", "topPoint:: ${topPoint} and topPoint:: ${bottomPoint}")
 
         return proportion
     }
